@@ -9,3 +9,4 @@ __pycache__/
 *.pyc
 config.json
 build.zip
+test.py
