@@ -6,6 +6,8 @@ import json
 import sys
 import os
 
+# pyinstaller Event_helper.spec
+
 from utils.helpers import check_github_update
 from utils.config_manager import load_config, save_config, CONFIG_FILE
 from ui.main_window import build_main_ui
@@ -27,37 +29,6 @@ def main():
 
     update = check_github_update()
     config = load_config()
-
-    if update is not None:
-        try:
-            version = None
-            if os.path.exists('list.json'):
-                with open('list.json', 'r', encoding='utf-8-sig') as f:
-                    data = json.load(f)
-                for key in data:
-                    if key.strip().lower() == "version":
-                        version = data[key]
-                        break
-            else:
-                print("[Update] Файл list.json не найден")
-
-            if not version:
-                print("[Update] Не удалось найти версию в list.json")
-            else:
-                try:
-                    current_version = float(version)
-                    last_version = float(update)
-
-                    if current_version < last_version:
-                        webbrowser.open(
-                            f"https://github.com/IVANUC1/event-helper/releases/tag/event_helper_{update}"
-                        )
-                except ValueError as e:
-                    print(f"[Update] Ошибка сравнения версий (текущая: {version}, новая: {update}): {e}")
-        except json.JSONDecodeError as e:
-            print(f"[Update] Ошибка чтения list.json: {e}")
-        except Exception as e:
-            print(f"[Update] Непредвиденная ошибка: {e}")
 
     if config is None:
         setup_win = tk.Toplevel(root)
@@ -109,8 +80,37 @@ def main():
             save_config(config["username"], config["observers"], config["assistants"])
         build_main_ui()
 
+    if update is not None:
+        try:
+            version = None
+            if os.path.exists('list.json'):
+                with open('list.json', 'r', encoding='utf-8-sig') as f:
+                    data = json.load(f)
+                for key in data:
+                    if key.strip().lower() == "version":
+                        version = data[key]
+                        break
+            else:
+                print("[Update] Файл list.json не найден")
+
+            if not version:
+                print("[Update] Не удалось найти версию в list.json")
+            else:
+                try:
+                    current_version = float(version)
+                    last_version = float(update)
+
+                    if current_version < last_version:
+                        webbrowser.open(
+                            f"https://github.com/IVANUC1/event-helper/releases/tag/event_helper_{update}"
+                        )
+                except ValueError as e:
+                    print(f"[Update] Ошибка сравнения версий (текущая: {version}, новая: {update}): {e}")
+        except json.JSONDecodeError as e:
+            print(f"[Update] Ошибка чтения list.json: {e}")
+        except Exception as e:
+            print(f"[Update] Непредвиденная ошибка: {e}")
+
     root.mainloop()
-
-
 if __name__ == "__main__":
     main()

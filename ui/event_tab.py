@@ -6,6 +6,7 @@ from utils.helpers import time_detector, text_generator
 from utils.event_loader import render_description, get_description
 from event_helpers.random_items import get_random_item_by_phase
 from event_helpers.random_effects import get_random_effect
+from event_helpers.random_wheel import create_wheel
 
 
 def generate_event():
@@ -129,7 +130,9 @@ def on_event_select(event):
         btn = tk.Button(state.special_frame, text="Получить случайный предмет",
                         command=generate_random_item, bg="#d9ead3", width=25)
         btn.pack(pady=10)
-
+    elif selected_clean == "Апгрейдер":
+        tk.Label(state.special_frame, text="Колесо фортуны", font=('Arial', 10, 'bold')).pack(pady=5)
+        create_wheel(state.special_frame)
     else:
         tk.Label(state.special_frame,
                  text=f"Специальный функционал для ивента '{selected}' пока не реализован.",

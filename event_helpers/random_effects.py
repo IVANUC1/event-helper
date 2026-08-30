@@ -16,7 +16,6 @@ def get_random_effect():
     try:
         with open(list_path, 'r', encoding='utf-8-sig') as f:
             data = json.load(f)
-        # ищем ключ, игнорируя пробелы по краям
         effects = []
         for key in data:
             if key.strip() == "random_effects":
